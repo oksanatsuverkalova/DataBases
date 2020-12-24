@@ -1,2 +1,2 @@
-# MySQL
-MySQL Homework
+# DataBases
+SQL Homework
