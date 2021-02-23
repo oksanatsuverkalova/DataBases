@@ -1,0 +1,15 @@
+-- существует ли ХС с данным email 
+
+DELIMITER //
+-- DROP TRIGGER IF EXISTS registration_new//
+CREATE TRIGGER registration_new BEFORE INSERT ON registration
+	FOR EACH ROW 
+	BEGIN 
+		IF (EXISTS(SELECT 1 FROM registration WHERE email = NEW.email)) THEN
+		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'This email already exists';
+	END IF;
+END //
+
+DELIMITER ;
+
+-- 
