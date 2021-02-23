@@ -1,0 +1,18 @@
+-- представления
+
+-- представление, которое выводит название ХС company_name из таблицы registration и тип ХС из таблицы type
+
+CREATE OR REPLACE VIEW v AS 
+  SELECT registration.company_name AS r_name, type.type_name AS t_name 
+    FROM registration, type 
+      WHERE registration.company_name = type.id;
+      
+     
+-- представление для просмотра площадок, находящихся в аренде у ХС
+     
+CREATE OR REPLACE VIEW v AS 
+  SELECT registration.company_name AS r_name, connection.connection_name AS с_name 
+    FROM registration, connection 
+      WHERE registration.company_name = connection.id;
+      
+     
