@@ -1,0 +1,74 @@
+-- прорабатывала разные варианты запросов для закрепления подходов извлечения информации из заданных таблиц
+
+-- запрос: вывод ХС, поднадзорных ветеринарному типу надзора
+
+SELECT * FROM inspection_type WHERE inspection_id = 1;
+
+-- запрос: вывод  имен пользователей, зарегистрированных в роли администратора
+
+SELECT
+	first_name,
+	last_name
+FROM 
+	user_type
+WHERE
+	user_id = 1;
+	
+-- запрос: вывод номера телефона, email и факса двадцатого ХС в списке
+
+SELECT
+	phone,
+	email,
+	(SELECT faxnumber FROM contacts WHERE contacts.registration_id = registration.id) AS fax
+FROM 
+	registration
+WHERE
+	id = 20;
+	
+-- запрос: объединить макро- и микро- предприятия ХС
+
+SELECT id FROM size_company WHERE size_id = 1
+UNION
+SELECT id FROM size_company WHERE size_id = 2;
+
+-- запрос: поиск зарегистрированного пользователя по имени
+
+SELECT CONCAT(first_name, ' ', last_name) AS fullname  
+  FROM user_type
+  WHERE first_name LIKE 'J%';
+
+ 
+-- запрос: регулярные выражения
+
+ SELECT CONCAT(first_name, ' ', last_name) AS fullname  
+  FROM user_type
+  WHERE last_name RLIKE '^K.*r$';
+ 
+ 
+ -- запрос: сортировка по дате создания заявления на регистрацию ХС в системе Цербер (данные случайным образом сгенерированы filldb)
+ 
+ SELECT * FROM registration ORDER BY created_at;
+ 
+ -- запрос: название компании ХС и имя пользователя, зарегистрированного в системе
+ 
+SELECT * FROM registration;
+SELECT * FROM user_type; 
+
+SELECT registration.id, registration.company_name, user_type.id, user_type.first_name, user_type.last_name
+FROM registration JOIN user_type
+WHERE registration.id = user_type.id;
+
+-- запрос: из какого региона зарегистрировано больше ХС
+
+SELECT * FROM registration;
+SELECT * FROM region_type; 
+
+SELECT registration.id, COUNT(region_type.region_id) 
+FROM registration JOIN region_type
+WHERE registration.id = region_type.region_id
+GROUP BY region_type.region_id;
+
+
+
+
+ 
